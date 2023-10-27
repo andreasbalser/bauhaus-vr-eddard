@@ -39,11 +39,11 @@ public class ServerMoveAroundTarget : NetworkBehaviour
 
         Vector3 oldPositionVec = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         Vector3 newPositionVec = new Vector3(newPosition.x, newPosition.y, newPosition.z);
+
+        Vector3 newForward = newPositionVec - oldPositionVec;
         
-        Quaternion ret = Quaternion.FromToRotation(oldPositionVec, newPositionVec) * transform.rotation;
+        transform.forward = newForward.normalized;
 
-        Debug.Log(ret);
-
-        return ret;
+        return transform.rotation;
     }
 }

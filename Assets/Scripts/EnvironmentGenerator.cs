@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -53,7 +52,7 @@ public class EnvironmentGenerator : MonoBehaviour
             
             Vector3 tmp = new Vector3();
             tmp.x = Random.Range(generatorBoundsMin.x, generatorBoundsMax.x);
-            tmp.y = 0;
+            tmp.y = Random.Range(generatorBoundsMin.y, generatorBoundsMax.y);
             tmp.z = Random.Range(generatorBoundsMin.z, generatorBoundsMax.z);
             
             randomObject.transform.position = tmp;
