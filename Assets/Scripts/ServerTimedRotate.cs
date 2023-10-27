@@ -13,5 +13,10 @@ public class ServerTimedRotate : NetworkBehaviour
         if (!IsServer)
             return;
         // Your code for Exercise 1.4 here 
+        float deltaTime = Time.deltaTime;
+        Quaternion addedRotation = Quaternion.Euler(deltaTime * degreesPerSecondX, deltaTime * degreesPerSecondY,
+            deltaTime * degreesPerSecondZ);
+
+        transform.rotation = transform.rotation * addedRotation;
     }
 }
