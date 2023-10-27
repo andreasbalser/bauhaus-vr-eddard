@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnvironmentGenerator : MonoBehaviour
 {
@@ -22,6 +26,7 @@ public class EnvironmentGenerator : MonoBehaviour
     void Start()
     {
         // Your code for Exercise 1.1 part 1.) here
+        GenerateEnvironment();
     }
 
     // Update is called once per frame
@@ -38,7 +43,32 @@ public class EnvironmentGenerator : MonoBehaviour
     void GenerateEnvironment()
     {
         // Your code for Exercise 1.1 part 1.) here
+        
+        while (instances.Count < numObjects)
+        {
+            GameObject randomObject =
+                Instantiate(environmentPrefabs.ElementAt(Convert.ToInt32(environmentPrefabs.Count * Random.value)));
+            
+            randomObject.transform.parent = this.gameObject.transform;
+            
+            Vector3 tmp = new Vector3();
+            tmp.x = Random.Range(generatorBoundsMin.x, generatorBoundsMax.x);
+            tmp.y = 0;
+            tmp.z = Random.Range(generatorBoundsMin.z, generatorBoundsMax.z);
+            
+            randomObject.transform.position = tmp;
+            
+            Debug.Log(tmp);
+            
+            //randomObject.transform.position = new Vector3(randomObject.transform.position.x, 0, randomObject.transform.position.z);
+            randomObject.transform.Rotate(new Vector3(0, 360 * Random.value, 0));
+    
+            instances.Add(randomObject);
+        }
+        
         StartCoroutine(ResolveCollisions());
+
+        
     }
 
     IEnumerator ResolveCollisions()
