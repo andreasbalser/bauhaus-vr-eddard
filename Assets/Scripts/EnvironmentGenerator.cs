@@ -113,7 +113,7 @@ public class EnvironmentGenerator : MonoBehaviour
 
 
    IEnumerator ResolveCollisions()
-   {
+   {   
        yield return new WaitForSeconds(2);
   
        foreach (var instance in instances)

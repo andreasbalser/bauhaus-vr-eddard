@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,6 +8,11 @@ public class ServerTimedRotate : NetworkBehaviour
     public float degreesPerSecondY = 20;
     public float degreesPerSecondZ = 0;
     
+    private void Start()
+    {
+        
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -17,6 +23,6 @@ public class ServerTimedRotate : NetworkBehaviour
         Quaternion addedRotation = Quaternion.Euler(deltaTime * degreesPerSecondX, deltaTime * degreesPerSecondY,
             deltaTime * degreesPerSecondZ);
 
-        transform.rotation = transform.rotation * addedRotation;
+        transform.localRotation = transform.localRotation * addedRotation;
     }
 }
