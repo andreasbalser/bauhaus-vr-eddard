@@ -25,6 +25,7 @@ public class ServerMoveAroundTarget : NetworkBehaviour
     {
         // Your code for Exercise 1.2 here
 
+        // Calculate translation from target and rotate it
         Vector3 translation = transform.position - target.position;
         translation = Quaternion.AngleAxis(Time.deltaTime * degreesPerSecond, Vector3.up) * translation;
 
@@ -36,11 +37,13 @@ public class ServerMoveAroundTarget : NetworkBehaviour
     Quaternion CalculateRotationUpdate(Vector3 newPosition)
     {
         // Your code for Exercise 1.2 here
-
+        
+        // Calculate difference between current and next frame (= new current vector)
         Vector3 oldPositionVec = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         Vector3 newPositionVec = new Vector3(newPosition.x, newPosition.y, newPosition.z);
         Vector3 newForward = newPositionVec - oldPositionVec;
         
+        // Calculate Rotation in World Coordinates
         Quaternion newRotation = Quaternion.LookRotation(newForward, Vector3.up);
 
         return newRotation;
