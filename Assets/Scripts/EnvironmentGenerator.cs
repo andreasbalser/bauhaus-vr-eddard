@@ -8,132 +8,159 @@ using Random = UnityEngine.Random;
 
 public class EnvironmentGenerator : MonoBehaviour
 {
-   public List<GameObject> environmentPrefabs = new List<GameObject>();
-   private List<GameObject> instances = new List<GameObject>();
-   public List<Collider> restrictedBounds = new List<Collider>();
-   public int numObjects = 30;
-   public Vector3 generatorBoundsMin = new Vector3(-30, 0, -30);
-   public Vector3 generatorBoundsMax = new Vector3(30, 0, 30);
-   public bool reset;
+ public List<GameObject> environmentPrefabs = new List<GameObject>();
+ private List<GameObject> instances = new List<GameObject>();
+ private List<GameObject> collidingObjects = new List<GameObject>();
+ public List<Collider> restrictedBounds = new List<Collider>();
+ public int numObjects = 30;
+ public Vector3 generatorBoundsMin = new Vector3(-35, 0, -35);
+ public Vector3 generatorBoundsMax = new Vector3(35, 0, 35);
+ public bool reset;
 
 
-   public bool CheckPosition(Vector3 position)
-   {
-       foreach (var existingObject in instances)
-       {
-           float minDistance = 10.0f; // Adjustable
-           if (Vector3.Distance(existingObject.transform.position, position) < minDistance)
-           {
-               return false; // Position is too close to an existing object
-           }
-       }
+ // Start is called before the first frame update
+ void Start()
+ {
+     GenerateEnvironment();
+ }
 
 
-       // Check if the position is outside of restricted bounds
-       foreach (var bound in restrictedBounds)
-       {
-           if (bound.bounds.Contains(position))
-           {
-               return false; // Position is inside restricted bounds
-           }
-       }
+ // Update is called once per frame
+ void Update()
+ {
+     if (reset)
+     {
+         ClearEnvironment();
+         reset = false;
+         GenerateEnvironment();
+     }
+ }
+ 
+ void ClearEnvironment()
+ {
+     foreach (var instance in instances)
+     {
+         Destroy(instance);
+     }
+     instances.Clear();
+ }
 
 
-       return true; // Position is valid
-   }
+ void GenerateEnvironment()
+ {
+     while (instances.Count < numObjects)
+     {
+         var prefabIndex = (int)(environmentPrefabs.Count * Random.value);
+         GameObject randomObject = Instantiate(environmentPrefabs[prefabIndex]);
+         instances.Add(randomObject);
+     }
+     GenerateObjects(instances);
+     
+     foreach (var randomObject in instances)
+     {
+         randomObject.transform.parent = transform;
+     }
+     
+     StartCoroutine(ResolveCollisions());
+ }
+ 
 
+ // GameObject GenerateObjects(GameObject randomObject)
+ // {
+ //     var randomObjectPosition = new Vector3();
+ //       
+ //     randomObjectPosition.x = Random.Range(generatorBoundsMin.x, generatorBoundsMax.x);
+ //     randomObjectPosition.y = Random.Range(generatorBoundsMin.y, generatorBoundsMax.y);
+ //     randomObjectPosition.z = Random.Range(generatorBoundsMin.z, generatorBoundsMax.z);
+ //     randomObject.transform.position = randomObjectPosition;
+ //     randomObject.transform.rotation = Quaternion.Euler(0, 360 * Random.value, 0);
+ //   
+ //     return randomObject;
+ // }
+ 
+ List<GameObject> GenerateObjects(List<GameObject> randomObjects)
+ {
+     foreach (var randomObject in randomObjects)
+     {
+         var randomObjectPosition = new Vector3();
 
-   // Start is called before the first frame update
-   void Start()
-   {
-       GenerateEnvironment();
-   }
+         randomObjectPosition.x = Random.Range(generatorBoundsMin.x, generatorBoundsMax.x);
+         randomObjectPosition.y = Random.Range(generatorBoundsMin.y, generatorBoundsMax.y);
+         randomObjectPosition.z = Random.Range(generatorBoundsMin.z, generatorBoundsMax.z);
+         randomObject.transform.position = randomObjectPosition;
+         randomObject.transform.rotation = Quaternion.Euler(0, 360 * Random.value, 0);
+     }
 
+     return randomObjects;
+ }
 
-   // Update is called once per frame
-   void Update()
-   {
-       if (reset)
-       {
-           ClearEnvironment();
-           reset = false;
-       }
-   }
+ 
 
+ // IEnumerator ResolveCollisions()
+ // {
+ //    yield return new WaitForSeconds(2);
+ //    
+ //    foreach (var instance in instances)
+ //    {
+ //         foreach (var bound in restrictedBounds)
+ //         {
+ //             if(bound.bounds.Intersects(instance.GetComponent<Collider>().bounds))
+ //             {
+ //                 instances.Remove(instance);
+ //                 collidingObjects.Add(instance);
+ //             }
+ //             
+ //         }
+ //    }
+ //
+ //    if (collidingObjects != null)
+ //    {
+ //        GenerateObjects(collidingObjects);
+ //    }
+ //
+ //     //Run the ResolveCollisions coroutine again for continuous checking
+ //     //yield return new WaitForSeconds(2);
+ //     StartCoroutine(ResolveCollisions());
+ // }
 
-   void ClearEnvironment()
-   {
-       foreach (var instance in instances)
-       {
-           Destroy(instance);
-       }
-       instances.Clear();
-       GenerateEnvironment();
-   }
+ IEnumerator ResolveCollisions()
+ {
+     yield return new WaitForSeconds(2);
+    
+     List<GameObject> objectsToRemove = new List<GameObject>();
 
+     foreach (var instance in instances)
+     {
+         foreach (var bound in restrictedBounds)
+         {
+             if (bound.bounds.Intersects(instance.GetComponent<Collider>().bounds))
+             {
+                 objectsToRemove.Add(instance);
+                 collidingObjects.Add(instance);
+             }
+             else
+             {
+                 break;
+             }
+         }
+     }
 
-   void GenerateEnvironment()
-   {
-       while (instances.Count < numObjects)
-       {
-           var prefabIndex = (int)(environmentPrefabs.Count * Random.value);
-           GameObject randomObject = Instantiate(environmentPrefabs[prefabIndex]);
-           //randomObject.transform.parent = transform;
+     foreach (var objectToRemove in objectsToRemove)
+     {
+         instances.Remove(objectToRemove);
+     }
 
+     if (collidingObjects.Count > 0)
+     {
+         GenerateObjects(collidingObjects);
+         foreach(var item in collidingObjects)
+         {
+             instances.Add(item);
+         }
+     }
+ 
+     StartCoroutine(ResolveCollisions());
+ }
 
-           Vector3 randomObjectPosition = new Vector3();
-           bool positionValid = false;
-
-
-           while (!positionValid)
-           {
-               randomObjectPosition.x = Random.Range(generatorBoundsMin.x, generatorBoundsMax.x);
-               randomObjectPosition.y = 0;
-               randomObjectPosition.z = Random.Range(generatorBoundsMin.z, generatorBoundsMax.z);
-
-
-               positionValid = CheckPosition(randomObjectPosition);
-           }
-          
-         
-           randomObject.transform.position = randomObjectPosition;
-           randomObject.transform.rotation = Quaternion.Euler(0, 360 * Random.value, 0);
-           instances.Add(randomObject);
-       }
-       foreach (var randomObject in instances)
-       {
-           randomObject.transform.parent = transform;
-       }
-
-
-
-
-       StartCoroutine(ResolveCollisions());
-   }
-
-
-   IEnumerator ResolveCollisions()
-   {
-       yield return new WaitForSeconds(2);
-  
-       foreach (var instance in instances)
-       {
-           foreach (var bound in restrictedBounds)
-           {
-               if (bound.bounds.Intersects(instance.GetComponent<Collider>().bounds))
-               {
-                  
-                   Vector3 newPosition = new Vector3();
-                   newPosition.x = Random.Range(generatorBoundsMin.x, generatorBoundsMax.x);
-                   newPosition.z = Random.Range(generatorBoundsMin.z, generatorBoundsMax.z);
-                   instance.transform.position = newPosition;
-               }
-           }
-       }
-  
-       //Run the ResolveCollisions coroutine again for continuous checking
-      StartCoroutine(ResolveCollisions());
-   }
-  
+ 
 }
-
