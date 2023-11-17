@@ -27,5 +27,15 @@ public class SteeringNavigation : MonoBehaviour
     {
         float steeringInput = steeringAction.action.ReadValue<float>();
         // Exercise 2.6 Steering Navigation
+
+        if (steeringInput > moveThreshhold)
+        {
+            Vector3 moveDirection = steeringHand.forward;
+            float moveFactor = moveSpeed * steeringInput;
+            
+            Vector3 moveIncrement = moveDirection * moveFactor;
+
+            navigationOrigin.position += moveIncrement * Time.deltaTime;
+        }
     }
 }
