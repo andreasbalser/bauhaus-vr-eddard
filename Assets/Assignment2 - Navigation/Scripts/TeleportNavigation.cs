@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,12 +19,18 @@ public class TeleportNavigation : MonoBehaviour
 
     public GameObject navigationPlatformGeometry;
 
-    public float rayLength = 10.0f;
+    public float rayLength = 20.0f;
     private bool rayIsActive = false;
 
     public XRInteractorLineVisual lineVisual;
     private float rayActivationThreshhold = 0.01f;
     private float teleportActivationThreshhold = 0.5f;
+    
+    // Added parameters
+
+    private bool AvatarIsShown;
+
+    private RaycastHit hit;
 
 
     // Start is called before the first frame update
@@ -59,7 +66,47 @@ public class TeleportNavigation : MonoBehaviour
         // hitpoint.transform.position = ... set hitpoint position
         // ...
         // }
+        
+        if(rayIsActive) SetHitpointPosition();
+
+        if (teleportActionValue > teleportActivationThreshhold && rayIsActive)
+        {
+            if (!AvatarIsShown) ShowPreviewAvatar();
+            UpdatePreviewAvatar();
+        }
+        else if (teleportActionValue < teleportActivationThreshhold && rayIsActive)
+        {
+            PerformTeleport();
+            HidePreviewAvatar();
+        }
     }
 
+    void SetHitpointPosition()
+    {
+        LayerMask ignoreHitpoint = ~(1 << hitpoint.layer);
+        if (Physics.Raycast(hand.position, hand.forward, out hit, rayLength, ignoreHitpoint))
+        {
+            hitpoint.transform.position = hit.point;
+        }
+    }
 
+    void ShowPreviewAvatar()
+    {
+        
+    }
+
+    void HidePreviewAvatar()
+    {
+        
+    }
+
+    void UpdatePreviewAvatar()
+    {
+        
+    }
+
+    void PerformTeleport()
+    {
+        
+    }
 }   
