@@ -9,9 +9,10 @@ public class TeleportNavigation : MonoBehaviour
 {
     public InputActionProperty teleportAction;
 
+    public Transform navigationOrigin;
     public Transform head;
     public Transform hand;
-
+    
     public LayerMask groundLayerMask;
 
     public GameObject previewAvatar;
@@ -28,9 +29,13 @@ public class TeleportNavigation : MonoBehaviour
     
     // Added parameters
 
-    private bool AvatarIsShown;
+    private bool teleportPositionIsSet;
 
     private RaycastHit hit;
+    private Vector3 teleportPosition = Vector3.zero;
+    private Quaternion teleportRotation = Quaternion.identity;
+
+    
 
 
     // Start is called before the first frame update
@@ -39,6 +44,8 @@ public class TeleportNavigation : MonoBehaviour
         lineVisual.enabled = false;
         hitpoint.SetActive(false);
         previewAvatar.SetActive(false);
+        
+        
     }
 
     // Update is called once per frame
@@ -60,53 +67,79 @@ public class TeleportNavigation : MonoBehaviour
         }
 
         // Exercise 2.8 Teleport Navigation
-        // implement teleport states and functions like e.g.: SetHitpoint(), ShowPreviewAvatar(), PerformTeleport()
-        // if (...) {
-        // ...
-        // hitpoint.transform.position = ... set hitpoint position
-        // ...
-        // }
         
         if(rayIsActive) SetHitpointPosition();
 
         if (teleportActionValue > teleportActivationThreshhold && rayIsActive)
         {
-            if (!AvatarIsShown) ShowPreviewAvatar();
-            UpdatePreviewAvatar();
+            if (!teleportPositionIsSet) SetTeleportPosition();
+            UpdateTeleportRotation();
         }
-        else if (teleportActionValue < teleportActivationThreshhold && rayIsActive)
+        else if (teleportActionValue < teleportActivationThreshhold && teleportPositionIsSet)
         {
             PerformTeleport();
-            HidePreviewAvatar();
         }
     }
 
     void SetHitpointPosition()
     {
         LayerMask ignoreHitpoint = ~(1 << hitpoint.layer);
-        if (Physics.Raycast(hand.position, hand.forward, out hit, rayLength, ignoreHitpoint))
+        if (Physics.Raycast(hand.position, hand.forward, out hit, rayLength, groundLayerMask))
         {
             hitpoint.transform.position = hit.point;
         }
     }
 
-    void ShowPreviewAvatar()
+    void SetTeleportPosition()
     {
+        // set teleport position
+        teleportPosition = hit.point;
+        teleportPositionIsSet = true;
+
+        previewAvatar.SetActive(true);
         
+        // set PreviewAvatar position
+        Vector3 heightOffset = new Vector3(0, head.transform.localPosition.y, 0);
+        Vector3 previewAvatarPosition = hit.point + heightOffset;
+        previewAvatar.transform.position = previewAvatarPosition;
     }
 
-    void HidePreviewAvatar()
+    void UpdateTeleportRotation()
     {
+        Vector3 teleportForwardDirection = teleportPosition - hitpoint.transform.position;
+        teleportForwardDirection.y = 0;
+        teleportRotation = Quaternion.LookRotation(teleportForwardDirection);
         
-    }
-
-    void UpdatePreviewAvatar()
-    {
-        
+        // Update PreviewAvatar rotation
+        previewAvatar.transform.rotation = teleportRotation;
     }
 
     void PerformTeleport()
     {
+        // Perform Teleport
+        Vector3 headPositionWithoutY = new Vector3(head.transform.localPosition.x, 0, head.transform.localPosition.z);
+        float headRotationY = head.transform.localRotation.eulerAngles.y;
+        float teleportRotationY = teleportRotation.eulerAngles.y;
+        Debug.Log("headRotationY: " + headRotationY + " , teleportRotationY: " + teleportRotationY +"\n OffsetAngle: " + (teleportRotationY + headRotationY)%360);
+        Quaternion teleportRotationOffset = Quaternion.Euler(0, -teleportRotationY + headRotationY + 180, 0);
+
+        Matrix4x4 teleportTransform =
+            Matrix4x4.Translate(teleportPosition) *
+            Matrix4x4.Inverse(Matrix4x4.TRS(headPositionWithoutY, teleportRotationOffset, head.transform.localScale));
         
+        
+        navigationOrigin.transform.position = teleportTransform.GetColumn(3);
+        navigationOrigin.transform.rotation = teleportTransform.rotation;
+        navigationOrigin.transform.localScale = teleportTransform.lossyScale;
+        
+        // Clear teleport info
+        teleportPosition = Vector3.zero;
+        teleportRotation = Quaternion.identity;
+        teleportPositionIsSet = false;
+
+        // Hide PreviewAvatar
+        previewAvatar.SetActive(false);
+        
+        Debug.Log("performed Teleport");
     }
 }   

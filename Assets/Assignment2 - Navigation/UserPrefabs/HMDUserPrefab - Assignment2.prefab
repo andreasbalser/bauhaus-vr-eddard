@@ -1446,19 +1446,28 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.02
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.04984665
-        value: 0
+        time: 0
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -2179,7 +2188,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 8388727
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -2576,7 +2585,7 @@ MonoBehaviour:
     m_Reference: {fileID: 4069951530690200774, guid: 266f96d8e11535e43a65a15b16b41116, type: 3}
   navigationOrigin: {fileID: 7216047633976425185}
   steeringHand: {fileID: 5848668381540053003}
-  moveSpeed: 2
+  moveSpeed: 4
 --- !u!114 &5662291883061755043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2601,11 +2610,12 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: -4832909987478017455, guid: 266f96d8e11535e43a65a15b16b41116, type: 3}
+  navigationOrigin: {fileID: 7216047633976425185}
   head: {fileID: 7216047633375872280}
   hand: {fileID: 2679059498078427805}
   groundLayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8388672
   previewAvatar: {fileID: 809437188073640316}
   hitpoint: {fileID: 8507988258694234099}
   navigationPlatformGeometry: {fileID: 4045002499303239265}
