@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -31,10 +28,9 @@ public class TeleportNavigation : MonoBehaviour
 
     private bool teleportPositionIsSet;
 
-    private RaycastHit hit;
+    private RaycastHit raycastHit;
     private Vector3 teleportPosition = Vector3.zero;
-    private Quaternion teleportRotation = Quaternion.identity;
-
+    private Quaternion avatarRotation = Quaternion.identity;
     
 
 
@@ -44,8 +40,6 @@ public class TeleportNavigation : MonoBehaviour
         lineVisual.enabled = false;
         hitpoint.SetActive(false);
         previewAvatar.SetActive(false);
-        
-        
     }
 
     // Update is called once per frame
@@ -72,8 +66,13 @@ public class TeleportNavigation : MonoBehaviour
 
         if (teleportActionValue > teleportActivationThreshhold && rayIsActive)
         {
-            if (!teleportPositionIsSet) SetTeleportPosition();
+            if (!teleportPositionIsSet)
+            {
+                SetTeleportPosition();
+                ShowPreviewAvatar();
+            }
             UpdateTeleportRotation();
+            UpdatePreviewAvatar();
         }
         else if (teleportActionValue < teleportActivationThreshhold && teleportPositionIsSet)
         {
@@ -83,63 +82,84 @@ public class TeleportNavigation : MonoBehaviour
 
     void SetHitpointPosition()
     {
-        LayerMask ignoreHitpoint = ~(1 << hitpoint.layer);
-        if (Physics.Raycast(hand.position, hand.forward, out hit, rayLength, groundLayerMask))
+        if (Physics.Raycast(hand.position, hand.forward, out raycastHit, rayLength, groundLayerMask))
         {
-            hitpoint.transform.position = hit.point;
+            hitpoint.transform.position = raycastHit.point;
         }
     }
 
     void SetTeleportPosition()
     {
         // set teleport position
-        teleportPosition = hit.point;
+        teleportPosition = raycastHit.point;
         teleportPositionIsSet = true;
-
-        previewAvatar.SetActive(true);
         
-        // set PreviewAvatar position
+        ShowPreviewAvatar();
+        
+        Debug.Log("locked teleport position");
+    }
+
+    void ShowPreviewAvatar()
+    {
+        if (!teleportPositionIsSet) return;
+        
         Vector3 heightOffset = new Vector3(0, head.transform.localPosition.y, 0);
-        Vector3 previewAvatarPosition = hit.point + heightOffset;
+        Vector3 previewAvatarPosition = raycastHit.point + heightOffset;
         previewAvatar.transform.position = previewAvatarPosition;
+        
+        previewAvatar.SetActive(true);
     }
 
     void UpdateTeleportRotation()
     {
+        // Calculate teleport rotation
         Vector3 teleportForwardDirection = teleportPosition - hitpoint.transform.position;
         teleportForwardDirection.y = 0;
-        teleportRotation = Quaternion.LookRotation(teleportForwardDirection);
+        avatarRotation = Quaternion.LookRotation(teleportForwardDirection, Vector3.up);
+    }
+
+    void UpdatePreviewAvatar()
+    {
+        Transform avatarTransform = previewAvatar.transform;
+
+        // Update rotation
+        avatarTransform.rotation = avatarRotation;
         
-        // Update PreviewAvatar rotation
-        previewAvatar.transform.rotation = teleportRotation;
+        // Update height
+        avatarTransform.position = new Vector3(avatarTransform.position.x, head.position.y, avatarTransform.position.z);
     }
 
     void PerformTeleport()
     {
-        // Perform Teleport
-        Vector3 headPositionWithoutY = new Vector3(head.transform.localPosition.x, 0, head.transform.localPosition.z);
-        float headRotationY = head.transform.localRotation.eulerAngles.y;
-        float teleportRotationY = teleportRotation.eulerAngles.y;
-        Debug.Log("headRotationY: " + headRotationY + " , teleportRotationY: " + teleportRotationY +"\n OffsetAngle: " + (teleportRotationY + headRotationY)%360);
-        Quaternion teleportRotationOffset = Quaternion.Euler(0, -teleportRotationY + headRotationY + 180, 0);
-
+        // for the teleport transform, we don't want the y-coordinate of the head
+        Vector3 headXZPosition = head.localPosition;
+        headXZPosition.y = 0;
+        
+        // calculate teleport rotation
+        float headRotationY = head.localRotation.eulerAngles.y;
+        float avatarRotationY = avatarRotation.eulerAngles.y;
+        float teleportRotationAngle = headRotationY - avatarRotationY + 180;
+        Quaternion teleportRotation = Quaternion.Euler(0, teleportRotationAngle, 0);
+        
+        
         Matrix4x4 teleportTransform =
             Matrix4x4.Translate(teleportPosition) *
-            Matrix4x4.Inverse(Matrix4x4.TRS(headPositionWithoutY, teleportRotationOffset, head.transform.localScale));
+            Matrix4x4.Inverse(Matrix4x4.TRS(headXZPosition, teleportRotation, head.transform.localScale));
         
+        // performing the teleport
+        Transform userTransform = navigationOrigin.transform;
+        userTransform.position = teleportTransform.GetColumn(3);
+        userTransform.rotation = teleportTransform.rotation;
+        userTransform.localScale = teleportTransform.lossyScale;
         
-        navigationOrigin.transform.position = teleportTransform.GetColumn(3);
-        navigationOrigin.transform.rotation = teleportTransform.rotation;
-        navigationOrigin.transform.localScale = teleportTransform.lossyScale;
+        Debug.Log("performed Teleport");
         
         // Clear teleport info
         teleportPosition = Vector3.zero;
-        teleportRotation = Quaternion.identity;
+        avatarRotation = Quaternion.identity;
         teleportPositionIsSet = false;
 
         // Hide PreviewAvatar
         previewAvatar.SetActive(false);
-        
-        Debug.Log("performed Teleport");
     }
 }   
