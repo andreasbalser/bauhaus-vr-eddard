@@ -103,7 +103,7 @@ public class TeleportNavigation : MonoBehaviour
     {
         if (!teleportPositionIsSet) return;
         
-        Vector3 heightOffset = new Vector3(0, head.transform.localPosition.y, 0);
+        Vector3 heightOffset = new Vector3(0, head.transform.position.y - navigationOrigin.transform.position.y, 0);
         Vector3 previewAvatarPosition = raycastHit.point + heightOffset;
         previewAvatar.transform.position = previewAvatarPosition;
         
@@ -126,7 +126,8 @@ public class TeleportNavigation : MonoBehaviour
         avatarTransform.rotation = avatarRotation;
         
         // Update height
-        avatarTransform.position = new Vector3(avatarTransform.position.x, head.position.y, avatarTransform.position.z);
+        float heightOffset = head.transform.position.y - navigationOrigin.transform.position.y;
+        avatarTransform.position = new Vector3(avatarTransform.position.x, teleportPosition.y + heightOffset, avatarTransform.position.z);
     }
 
     void PerformTeleport()

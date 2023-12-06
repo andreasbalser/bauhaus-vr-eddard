@@ -25,6 +25,7 @@ public class RayHitpointSerializer : NetworkBehaviour
     }
 
 
+    // runs in case IsOwner: Writes values from own scene to the Network Variables
     private bool SerializeRayUpdates(out bool rayEnabled, out Vector3 hitPos)
     {
         rayEnabled = false;
@@ -43,6 +44,7 @@ public class RayHitpointSerializer : NetworkBehaviour
         return false;
     }
 
+    // runs in case !IsOwner: Applies values of Network Variables to the own scene
     private void ApplyRayUpdates()
     {
         hitpoint.SetActive(rayHitpointEnabled.Value);
@@ -54,7 +56,7 @@ public class RayHitpointSerializer : NetworkBehaviour
             hitpoint.transform.position = hitpointPosition.Value;
         }
     }
-
+    
     private void Update()
     {
         if (IsOwner)
