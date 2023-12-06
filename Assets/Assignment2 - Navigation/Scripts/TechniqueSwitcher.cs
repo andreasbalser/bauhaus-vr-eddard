@@ -14,6 +14,7 @@ public class TechniqueSwitcher : MonoBehaviour
 
     public SteeringNavigation steeringNavigation;
     public TeleportNavigation teleportNavigation;
+    public PullingNavigation pullingNavigation;
     public XRInteractorLineVisual lineVisual;
 
     // Start is called before the first frame update
@@ -27,8 +28,13 @@ public class TechniqueSwitcher : MonoBehaviour
         {
             teleportNavigation = GetComponent<TeleportNavigation>();
         }
+        if (teleportNavigation == null)
+        {
+            pullingNavigation = GetComponent<PullingNavigation>();
+        }
         steeringNavigation.enabled = true;
         teleportNavigation.enabled = false;
+        pullingNavigation.enabled = false;
         lineVisual.enabled = false;
     }
 
@@ -43,14 +49,25 @@ public class TechniqueSwitcher : MonoBehaviour
                 currentTechniqueText.text = currentText;
                 steeringNavigation.enabled = false;
                 teleportNavigation.enabled = true;
+                pullingNavigation.enabled = false;
                 lineVisual.enabled = false;
             } 
             else if (currentText == "Teleport")
+            {
+                currentText = "Pulling";
+                currentTechniqueText.text = currentText;
+                steeringNavigation.enabled = false;
+                teleportNavigation.enabled = false;
+                pullingNavigation.enabled = true;
+                //lineVisual.enabled = true;
+            }
+            else if (currentText == "Pulling")
             {
                 currentText = "Steering";
                 currentTechniqueText.text = currentText;
                 steeringNavigation.enabled = true;
                 teleportNavigation.enabled = false;
+                pullingNavigation.enabled = false;
                 //lineVisual.enabled = true;
             }
         }
