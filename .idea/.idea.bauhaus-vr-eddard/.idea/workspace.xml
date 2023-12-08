@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="de0fb5ee-f7ba-4cd0-b44f-71f08d6360e0" name="Changes" comment="" />
+    <list default="true" id="de0fb5ee-f7ba-4cd0-b44f-71f08d6360e0" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.bauhaus-vr-eddard/.idea/shelf/Uncommitted_changes_before_Checkout_at_08_11_2023_15_43__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.bauhaus-vr-eddard/.idea/shelf/Uncommitted_changes_before_Checkout_at_08_11_2023_15_43__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.bauhaus-vr-eddard/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.bauhaus-vr-eddard/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,9 +22,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://C:/Users/Eddard/bauhaus-vr-eddard/bauhaus-vr-eddard/Assets/Scenes/Assignment-02-Explore-Your-World-SciFi.unity" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Eddard/bauhaus-vr-eddard/bauhaus-vr-eddard/Assets/Assignment2 - Navigation/Scripts/TechniqueSwitcher.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Eddard/bauhaus-vr-eddard/bauhaus-vr-eddard/Assets/Assignment2 - Navigation/UserPrefabs/HMDUserPrefab - Assignment2.prefab" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.6.0/Runtime/Core/NetworkBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@2.3.2/Runtime/Interaction/Interactors/Visual/XRInteractorLineVisual.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@2.3.2/Runtime/Interaction/Interactors/XRRayInteractor.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -40,6 +45,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Assignment-2",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -255,7 +261,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701353089525</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="implemented Pulling Navigation">
+      <option name="closed" value="true" />
+      <created>1701887943361</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1701887943361</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -337,6 +351,7 @@
     <MESSAGE value="Steering Nav done + Hitpoint calculation done" />
     <MESSAGE value="teleportation works. Code still messy though." />
     <MESSAGE value="cleaned up the code" />
-    <option name="LAST_COMMIT_MESSAGE" value="cleaned up the code" />
+    <MESSAGE value="implemented Pulling Navigation" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented Pulling Navigation" />
   </component>
 </project>

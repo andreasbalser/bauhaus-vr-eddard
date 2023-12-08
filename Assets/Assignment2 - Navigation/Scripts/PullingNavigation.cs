@@ -11,8 +11,8 @@ public class PullingNavigation : MonoBehaviour
     public Transform navigationOrigin;
     public Transform steeringHand;
 
-    public float moveSpeed = 1f;
-    public float maxSpeed = 2;
+    public float moveSpeed = 60f;
+    public float maxSpeed = 1000;
     private float graspThreshhold = 0.2f;
 
     private Vector3 graspBeginPosition;
@@ -45,7 +45,7 @@ public class PullingNavigation : MonoBehaviour
             Vector3 moveDirection = graspBeginPosition - handPosition;
             Debug.Log("Grasp begin: " + graspBeginPosition + "\nHand Position: " + handPosition + "\nMoveDirection: " + moveDirection);
             
-            float moveFactor = Math.Max(1 + moveDirection.magnitude * moveSpeed, maxSpeed);
+            float moveFactor = Math.Min(1 + moveDirection.magnitude * moveSpeed, maxSpeed);
             
             Vector3 moveIncrement = moveDirection * moveFactor;
 

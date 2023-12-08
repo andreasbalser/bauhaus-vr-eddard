@@ -2649,8 +2649,8 @@ MonoBehaviour:
     m_Reference: {fileID: 4069951530690200774, guid: 266f96d8e11535e43a65a15b16b41116, type: 3}
   navigationOrigin: {fileID: 7216047633976425185}
   steeringHand: {fileID: 5848668381540053003}
-  moveSpeed: 0.5
-  maxSpeed: 1.5
+  moveSpeed: 60
+  maxSpeed: 1000
 --- !u!1 &7216047634103647853
 GameObject:
   m_ObjectHideFlags: 0
