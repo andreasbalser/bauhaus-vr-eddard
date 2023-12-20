@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,6 +25,9 @@ public class VirtualHand : MonoBehaviour
     // calculation variables
     private GameObject grabbedObject;
     private Matrix4x4 offsetMatrix;
+    
+    // added variables
+    private Transform formerParent;
 
     private bool canGrab
     {
@@ -101,12 +105,63 @@ public class VirtualHand : MonoBehaviour
     {
         // TODO: your solution for excercise 3.4
         // use this function to implement an object-grabbing that re-parents the object to the hand without snapping
+        
+        if (grabAction.action.IsPressed())
+        {
+            if (grabbedObject == null && handCollider.isColliding && canGrab)
+            {
+                grabbedObject = handCollider.collidingObject;
+                formerParent = grabbedObject.transform.parent;
+            }
+
+            if (grabbedObject != null)
+            {
+                grabbedObject.transform.SetParent(this.transform, true);
+            }
+        }
+        else if (grabAction.action.WasReleasedThisFrame())
+        {
+            if (formerParent != null)
+                grabbedObject.transform.SetParent(formerParent, true);
+            formerParent = null;
+            
+            if(grabbedObject != null)
+                grabbedObject.GetComponent<ManipulationSelector>().Release();
+            grabbedObject = null;
+        }
     }
 
     private void CalculationGrab()
     {
         // TODO: your solution for excercise 3.4
         // use this function to implement an object-grabbing that uses an offset calculation without snapping (and no re-parenting!) 
+        
+        if (grabAction.action.IsPressed())
+        {
+            if (grabbedObject == null && handCollider.isColliding && canGrab)
+            {
+                grabbedObject = handCollider.collidingObject;
+            }
+
+            if (grabbedObject != null)
+            {
+                // TODO: TO BE TESTED!
+                
+                Matrix4x4 grabbedObjectWorldTransform = grabbedObject.transform.localToWorldMatrix;
+                Matrix4x4 handWorldTransform = transform.worldToLocalMatrix;
+                offsetMatrix = grabbedObjectWorldTransform * handWorldTransform;
+
+                grabbedObject.transform.position = Vector3.Scale(grabbedObject.transform.position, offsetMatrix.GetPosition());
+                grabbedObject.transform.rotation = offsetMatrix.rotation;
+                grabbedObject.transform.lossyScale.Scale(offsetMatrix.lossyScale);
+            }
+        }
+        else if (grabAction.action.WasReleasedThisFrame())
+        {
+            if(grabbedObject != null)
+                grabbedObject.GetComponent<ManipulationSelector>().Release();
+            grabbedObject = null;
+        }
     }
 
     #endregion
