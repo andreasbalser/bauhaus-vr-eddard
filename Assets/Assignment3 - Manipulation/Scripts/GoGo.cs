@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -34,6 +35,19 @@ public class GoGo : MonoBehaviour
             return false;
         }
     }
+    
+    private Vector3 origin
+    {
+        get
+        {
+            Vector3 v = head.position;
+            v.y -= originHeadOffset;
+            return v;
+        }
+    }
+
+    private Vector3 handDirection => hand.position - origin;
+    private float handDistance => handDirection.magnitude;
 
     #endregion
 
@@ -63,12 +77,48 @@ public class GoGo : MonoBehaviour
     {
         // TODO: your solution for excercise 3.6
         // use this function to calculate and apply the hand displacement according to the go-go technique
+
+        float thresholdOvershoot = handDistance - distanceThreshold;
+        
+        if (thresholdOvershoot > 0)
+        {
+            float virtualHandDistance = handDistance + k * (float)Math.Pow(thresholdOvershoot, 2);
+
+            this.transform.position = origin + virtualHandDistance * handDirection.normalized;
+        }
     }
 
     private void GrabCalculation()
     {
         // TODO: your solution for excercise 3.6
         // use this function to calculate the grabbing of an object
+        
+        if (grabAction.action.IsPressed())
+        {
+            if (grabbedObject == null && handCollider.isColliding && canGrab)
+            {
+                grabbedObject = handCollider.collidingObject;
+            }
+
+            if (grabbedObject != null)
+            {
+                // TODO: TO BE TESTED!
+                
+                Matrix4x4 grabbedObjectWorldTransform = grabbedObject.transform.localToWorldMatrix;
+                Matrix4x4 handWorldTransform = transform.worldToLocalMatrix;
+                offsetMatrix = grabbedObjectWorldTransform * handWorldTransform;
+
+                grabbedObject.transform.position = Vector3.Scale(grabbedObject.transform.position, offsetMatrix.GetPosition());
+                grabbedObject.transform.rotation = offsetMatrix.rotation;
+                grabbedObject.transform.lossyScale.Scale(offsetMatrix.lossyScale);
+            }
+        }
+        else if (grabAction.action.WasReleasedThisFrame())
+        {
+            if(grabbedObject != null)
+                grabbedObject.GetComponent<ManipulationSelector>().Release();
+            grabbedObject = null;
+        }
     }
 
     #endregion

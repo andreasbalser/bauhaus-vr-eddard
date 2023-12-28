@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="de0fb5ee-f7ba-4cd0-b44f-71f08d6360e0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.bauhaus-vr-eddard/.idea/shelf/Uncommitted_changes_before_Checkout_at_08_11_2023_15_43__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.bauhaus-vr-eddard/.idea/shelf/Uncommitted_changes_before_Checkout_at_08_11_2023_15_43__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.bauhaus-vr-eddard/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.bauhaus-vr-eddard/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Assignment3 - Manipulation/Scripts/VirtualHand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assignment3 - Manipulation/Scripts/VirtualHand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Assignment3 - Manipulation/Scripts/GoGo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assignment3 - Manipulation/Scripts/GoGo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Assignment3 - Manipulation/Scripts/Homer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assignment3 - Manipulation/Scripts/Homer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Assignment3 - Manipulation/UserPrefabs/HMDUserPrefab - Assignment3.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assignment3 - Manipulation/UserPrefabs/HMDUserPrefab - Assignment3.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-2021.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-2021.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,10 +26,9 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f712b1dc50b4468388b9c5f95d0d0eaf159e00/4c/f337bb96/Quaternion.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Andi/bauhaus-vr-eddard/Assets/Scenes/Assignment-02-Explore-Your-World-SciFi.unity" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Andi/bauhaus-vr-eddard/Assets/Scripts/ServerTimedRotate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Andi/bauhaus-vr-eddard/Assets/Scripts/ServerTimedRotate.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.5.1/InputSystem/Actions/InputAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.6.0/Runtime/Core/NetworkBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@2.3.2/Runtime/Interaction/Controllers/ActionBasedController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@2.3.2/Runtime/Interaction/Interactors/Visual/XRInteractorLineVisual.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@2.3.2/Runtime/Interaction/Interactors/XRRayInteractor.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -44,27 +44,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Assignment-3",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Assignment-3&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\Andi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache",
-      "C:\\Users\\Andi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache",
-      "C:\\Users\\Andi\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\Andi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\Andi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\Andi\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.26f1\Editor\Unity.exe" />
@@ -160,7 +160,8 @@
       <workItem from="1700747599107" duration="1283000" />
       <workItem from="1700815416828" duration="11976000" />
       <workItem from="1701347010993" duration="6189000" />
-      <workItem from="1703078249999" duration="3974000" />
+      <workItem from="1703078249999" duration="4059000" />
+      <workItem from="1703676771991" duration="12693000" />
     </task>
     <task id="LOCAL-00001" summary="Exercise 1.1, Task 1">
       <option name="closed" value="true" />
@@ -282,7 +283,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703004035381</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="implemented ex3.4 virtual hands (not tested yet)">
+      <option name="closed" value="true" />
+      <created>1703082688696</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1703082688697</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -366,6 +375,7 @@
     <MESSAGE value="cleaned up the code" />
     <MESSAGE value="implemented Pulling Navigation" />
     <MESSAGE value="initial setup" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial setup" />
+    <MESSAGE value="implemented ex3.4 virtual hands (not tested yet)" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented ex3.4 virtual hands (not tested yet)" />
   </component>
 </project>
