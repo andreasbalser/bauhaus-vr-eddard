@@ -15,16 +15,22 @@ public class ManipulationSelector : NetworkBehaviour
     {
         // TODO: your solution for excercise 3.8
         // check if object can be grabbed by a user
+        if (isGrabbed.Value) return false;
+        
         // trigger ownership handling
+        transferOwnershipServerRpc();
+        
         // trigger grabbed state update
+        updateGrabbedStateServerRpc(true);
 
-        return true; // <-- this is just a placeholder, determine the actual return value by your implemented policy
+        return GetComponent<NetworkObject>().IsOwner;
     }
 
     public void Release()
     {
         // TODO: your solution for excercise 3.8
         // use this function trigger a grabbed state update on object release
+        updateGrabbedStateServerRpc(false);
     }
 
     #endregion
@@ -34,6 +40,20 @@ public class ManipulationSelector : NetworkBehaviour
     // TODO: your solution for excercise 3.8
     // implement a rpc to transfer the ownership of an object 
     // implement a rpc to update the isGrabbed value
+
+    [ServerRpc (RequireOwnership = false)]
+    void transferOwnershipServerRpc(ServerRpcParams serverRpcParams = default)
+    {
+        var clientId = serverRpcParams.Receive.SenderClientId;
+        
+        GetComponent<NetworkObject>().ChangeOwnership(clientId);
+    }
+
+    [ServerRpc]
+    void updateGrabbedStateServerRpc(bool value)
+    {
+        isGrabbed.Value = value;
+    }
 
     #endregion
 }

@@ -95,7 +95,7 @@ public class GoGo : MonoBehaviour
         
         if (grabAction.action.IsPressed())
         {
-            if (grabbedObject == null && handCollider.isColliding && canGrab)
+            if (grabbedObject == null && canGrab)
             {
                 grabbedObject = handCollider.collidingObject;
             }

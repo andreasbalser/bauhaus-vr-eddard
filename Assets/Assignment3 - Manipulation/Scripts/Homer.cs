@@ -116,7 +116,7 @@ public class Homer : MonoBehaviour
 
         if (grabAction.action.WasPressedThisFrame())
         {
-            if (grabbedObject == null &&
+            if (grabbedObject == null && canGrab &&
                 Physics.Raycast(hand.position, direction, out hit, rayMaxLength, layerMask))
             {
                 grabbedObject = hit.transform.gameObject;
