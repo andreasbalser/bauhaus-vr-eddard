@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using Unity.XR.CoreUtils;
 using UnityEngine;
@@ -106,27 +107,21 @@ public class VirtualHand : MonoBehaviour
         // TODO: your solution for excercise 3.4
         // use this function to implement an object-grabbing that re-parents the object to the hand without snapping
         
-        if (grabAction.action.IsPressed())
+        if (grabAction.action.WasPressedThisFrame())
         {
-            if (grabbedObject == null && handCollider.isColliding && canGrab)
+            if (grabbedObject == null && canGrab)
             {
                 grabbedObject = handCollider.collidingObject;
-                formerParent = grabbedObject.transform.parent;
-            }
-
-            if (grabbedObject != null)
-            {
-                grabbedObject.transform.SetParent(this.transform, true);
+                grabbedObject.transform.SetParent(transform, true);
             }
         }
         else if (grabAction.action.WasReleasedThisFrame())
         {
-            if (formerParent != null)
-                grabbedObject.transform.SetParent(formerParent, true);
-            formerParent = null;
-            
             if(grabbedObject != null)
+            {
+                grabbedObject.transform.SetParent(null);
                 grabbedObject.GetComponent<ManipulationSelector>().Release();
+            }
             grabbedObject = null;
         }
     }
@@ -148,10 +143,12 @@ public class VirtualHand : MonoBehaviour
                 // TODO: TO BE TESTED!
                 
                 Matrix4x4 grabbedObjectWorldTransform = grabbedObject.transform.localToWorldMatrix;
-                Matrix4x4 handWorldTransform = transform.worldToLocalMatrix;
+                Matrix4x4 handWorldTransform = Matrix4x4.TRS(transform.localPosition, transform.localRotation, transform.lossyScale);
                 offsetMatrix = grabbedObjectWorldTransform * handWorldTransform;
+                Debug.Log("offsetMatrix: " + offsetMatrix);
 
-                grabbedObject.transform.position = Vector3.Scale(grabbedObject.transform.position, offsetMatrix.GetPosition());
+                //grabbedObject.transform.position = Vector3.Scale(grabbedObject.transform.position, offsetMatrix.GetPosition());
+                grabbedObject.transform.position = offsetMatrix.GetPosition();
                 grabbedObject.transform.rotation = offsetMatrix.rotation;
                 grabbedObject.transform.lossyScale.Scale(offsetMatrix.lossyScale);
             }

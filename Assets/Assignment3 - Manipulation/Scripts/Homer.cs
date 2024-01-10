@@ -49,7 +49,8 @@ public class Homer : MonoBehaviour
         }
     }
 
-    private Vector3 direction => hand.position - origin;
+    private Vector3 handDirection => hand.position - origin;
+    private float handDistance => handDirection.magnitude;
 
     #endregion
 
@@ -93,7 +94,7 @@ public class Homer : MonoBehaviour
 
         Vector3 handPosition = hand.position;
         ray.SetPosition(0, handPosition);
-        ray.SetPosition(1, origin + (direction.normalized * rayMaxLength));
+        ray.SetPosition(1, handPosition + (rayMaxLength * handDirection.normalized));
     }
 
     private void ApplyHandOffset()
@@ -101,12 +102,18 @@ public class Homer : MonoBehaviour
         //TODO: your solution for excercise 3.5
         // use this function to calculate and adjust the hand as described in the h.o.m.e.r. technique
 
-        float actualHandDistance = direction.magnitude;
-        float distanceMoveRatio = actualHandDistance / grabHandDistance;
-        float virtualHandDistance = grabOffsetDistance * distanceMoveRatio;
-        
-        // move virtual hand
-        transform.position = origin + virtualHandDistance * direction.normalized;
+        if (grabbedObject != null)
+        {
+            float distanceMoveRatio = handDistance / grabHandDistance;
+            float virtualHandDistance = grabOffsetDistance * distanceMoveRatio;
+
+            // move virtual hand
+            transform.position = origin + virtualHandDistance * handDirection.normalized;
+        }
+        else
+        {
+            transform.position = hand.position;
+        }
     }
 
     private void GrabCalculation()
@@ -116,43 +123,27 @@ public class Homer : MonoBehaviour
 
         if (grabAction.action.WasPressedThisFrame())
         {
-            if (grabbedObject == null && canGrab &&
-                Physics.Raycast(hand.position, direction, out hit, rayMaxLength, layerMask))
+            if (grabbedObject == null &&
+                Physics.Raycast(hand.position, handDirection.normalized, out hit, rayMaxLength, layerMask))
             {
                 grabbedObject = hit.transform.gameObject;
-                grabHandDistance = direction.magnitude;
+                grabHandDistance = handDistance;
                 grabOffsetDistance = hit.distance + grabHandDistance;
-
-                return;
+                
+                ApplyHandOffset();
+                
+                grabbedObject.transform.SetParent(transform);
             }
         }
-
-        if (grabAction.action.IsPressed())
-        {
-            if (grabbedObject != null)
-            {
-                // TODO: TO BE TESTED!
-
-                // calculate offset matrix
-                Matrix4x4 grabbedObjectWorldTransform = grabbedObject.transform.localToWorldMatrix;
-                Matrix4x4 handWorldTransform = this.transform.worldToLocalMatrix;
-                offsetMatrix = grabbedObjectWorldTransform * handWorldTransform;
-
-                // add offset
-                grabbedObject.transform.position =
-                    Vector3.Scale(grabbedObject.transform.position, offsetMatrix.GetPosition());
-                grabbedObject.transform.rotation = offsetMatrix.rotation;
-                grabbedObject.transform.lossyScale.Scale(offsetMatrix.lossyScale);
-            }
-        }
-
         else if (grabAction.action.WasReleasedThisFrame())
         {
-            if (grabbedObject != null)
+            if(grabbedObject != null)
+            {
+                grabbedObject.transform.SetParent(null);
                 grabbedObject.GetComponent<ManipulationSelector>().Release();
+            }
             grabbedObject = null;
-            
-            this.transform.position = Vector3.zero;
+            ApplyHandOffset();
         }
     }
 

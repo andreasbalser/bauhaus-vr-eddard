@@ -77,14 +77,19 @@ public class GoGo : MonoBehaviour
     {
         // TODO: your solution for excercise 3.6
         // use this function to calculate and apply the hand displacement according to the go-go technique
-
-        float thresholdOvershoot = handDistance - distanceThreshold;
         
-        if (thresholdOvershoot > 0)
+        if (handDistance < distanceThreshold)
         {
-            float virtualHandDistance = handDistance + k * (float)Math.Pow(thresholdOvershoot, 2);
-
-            this.transform.position = origin + virtualHandDistance * handDirection.normalized;
+            transform.position = hand.position;
+        }
+        else
+        {
+            float handDistanceConv = handDistance * 100;
+            float thresholdOvershootConv = (handDistance - distanceThreshold) * 100;
+            float virtualHandDistance = handDistanceConv + k * (thresholdOvershootConv * thresholdOvershootConv);
+            virtualHandDistance /= 100;
+            
+            transform.position = origin + virtualHandDistance * handDirection.normalized;
         }
     }
 
@@ -93,30 +98,21 @@ public class GoGo : MonoBehaviour
         // TODO: your solution for excercise 3.6
         // use this function to calculate the grabbing of an object
         
-        if (grabAction.action.IsPressed())
+        if (grabAction.action.WasPressedThisFrame())
         {
             if (grabbedObject == null && canGrab)
             {
                 grabbedObject = handCollider.collidingObject;
-            }
-
-            if (grabbedObject != null)
-            {
-                // TODO: TO BE TESTED!
-                
-                Matrix4x4 grabbedObjectWorldTransform = grabbedObject.transform.localToWorldMatrix;
-                Matrix4x4 handWorldTransform = transform.worldToLocalMatrix;
-                offsetMatrix = grabbedObjectWorldTransform * handWorldTransform;
-
-                grabbedObject.transform.position = Vector3.Scale(grabbedObject.transform.position, offsetMatrix.GetPosition());
-                grabbedObject.transform.rotation = offsetMatrix.rotation;
-                grabbedObject.transform.lossyScale.Scale(offsetMatrix.lossyScale);
+                grabbedObject.transform.SetParent(transform, true);
             }
         }
         else if (grabAction.action.WasReleasedThisFrame())
         {
             if(grabbedObject != null)
+            {
+                grabbedObject.transform.SetParent(null);
                 grabbedObject.GetComponent<ManipulationSelector>().Release();
+            }
             grabbedObject = null;
         }
     }

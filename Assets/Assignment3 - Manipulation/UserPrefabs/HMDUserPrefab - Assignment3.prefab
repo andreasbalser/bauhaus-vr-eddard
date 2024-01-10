@@ -572,7 +572,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3839371122037013567}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de649cc688c203f48ad8a5354a365602, type: 3}
   m_Name: 
@@ -609,7 +609,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 5605699287885502059, guid: 266f96d8e11535e43a65a15b16b41116, type: 3}
-  grabMethod: 0
+  grabMethod: 1
   handCollider: {fileID: 495525794676681636}
 --- !u!114 &5910828525664487283
 MonoBehaviour:
@@ -641,6 +641,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: -6803769171688260663, guid: 266f96d8e11535e43a65a15b16b41116, type: 3}
   handCollider: {fileID: 495525794676681636}
+  offsetNode: {fileID: 0}
 --- !u!114 &5748754185830151209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -648,14 +649,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3839371122037013567}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5292fd0019b1f574ca2a25b50a444657, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   head: {fileID: 7216047633375872280}
   originHeadOffset: 0.2
-  hand: {fileID: 0}
+  hand: {fileID: 5601115267561759158}
   ray: {fileID: 269397577991268249}
   rayMaxLength: 100
   layerMask:
@@ -811,7 +812,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4284957711837968130}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1565,29 +1566,29 @@ MonoBehaviour:
   m_UpdateType: 0
   m_IgnoreTrackingState: 0
   m_PositionInput:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
-      m_Name: 
+      m_Name: Position Input
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 9505e5c9-c30b-4f4f-af14-1a9187623444
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 0}
+    m_Reference: {fileID: -1340611536944791540, guid: 266f96d8e11535e43a65a15b16b41116, type: 3}
   m_RotationInput:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
-      m_Name: 
+      m_Name: Rotation Input
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 85a14eb7-f9aa-475b-a113-74e8beb60fab
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 0}
+    m_Reference: {fileID: -544387005101675255, guid: 266f96d8e11535e43a65a15b16b41116, type: 3}
   m_TrackingStateInput:
     m_UseReference: 1
     m_Action:
@@ -1973,7 +1974,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7623515097068787712}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de649cc688c203f48ad8a5354a365602, type: 3}
   m_Name: 
@@ -2019,7 +2020,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7623515097068787712}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea473886d0515ab46a8475293954bd21, type: 3}
   m_Name: 
@@ -2028,7 +2029,7 @@ MonoBehaviour:
   originHeadOffset: 0.2
   hand: {fileID: 2679059498078427805}
   distanceThreshold: 0.6
-  k: 0.16666667
+  k: 0.16
   grabAction:
     m_UseReference: 1
     m_Action:
@@ -2042,6 +2043,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: 2765326162551541354, guid: 266f96d8e11535e43a65a15b16b41116, type: 3}
   handCollider: {fileID: 3831442004134018260}
+  offsetNode: {fileID: 5944169173779336167}
 --- !u!114 &8745856248759362810
 MonoBehaviour:
   m_ObjectHideFlags: 0
